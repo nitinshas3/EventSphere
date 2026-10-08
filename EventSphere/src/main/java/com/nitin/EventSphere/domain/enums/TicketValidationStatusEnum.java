@@ -1,4 +1,4 @@
-package com.nitin.EventSphere.domain;
+package com.nitin.EventSphere.domain.enums;
 
 public enum TicketValidationStatusEnum {
     VALID , INVALID , EXPIRED

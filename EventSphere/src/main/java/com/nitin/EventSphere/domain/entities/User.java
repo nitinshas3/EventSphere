@@ -29,13 +29,13 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    // organizing events - a user can organize many events  , this is owned by the many side that is the event entity
+    // 1) organizing events - a user can organize many events  , this is owned by the many side that is the event entity
 
     @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL) // cascade meaning like if i do something to organizer that should also happen to even , like persist save update delete and all , if deleted organizer , delete the event too
     private List<Event> organizedEvents = new ArrayList<>();
 
 
-    // attending events
+    // 2) attending events
     // this is many to many doesnt matter who owns coz new talbe is created with primary keys of both the talbes event and user
 
     @ManyToMany
@@ -46,7 +46,7 @@ public class User {
     )
     private List<Event> attendingEvents = new ArrayList<>();
 
-    // staffing events
+    // 3) staffing events
     // even this many users can become staff of many event  , doenst matter who owns new table
 
     @ManyToMany

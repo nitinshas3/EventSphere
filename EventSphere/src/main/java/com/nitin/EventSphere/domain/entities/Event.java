@@ -1,6 +1,6 @@
 package com.nitin.EventSphere.domain.entities;
 
-import com.nitin.EventSphere.domain.EventStatusEnum;
+import com.nitin.EventSphere.domain.enums.EventStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,21 +48,22 @@ public class Event {
     @Enumerated(EnumType.STRING) // it would be in numbers like index we need to specify string
     private EventStatusEnum status;
 
-    // this is organizer , owning the relation , has foreing key here
+    // 1) this is organizer , owning the relation , has foreing key here
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizer_id")
     private User organizer;
 
 
-    // attenders
+    // 2) attenders
     @ManyToMany(mappedBy = "attendingEvents")
     private List<User> attendees = new ArrayList<>();
 
 
-    // staffs
+    // 3) staffs
     @ManyToMany(mappedBy = "staffingEvents")
     private List<User> staff = new ArrayList<>();
 
+    //4) ticket type - one event can have many ticket types
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TicketType> ticketTypes = new ArrayList<>();
 

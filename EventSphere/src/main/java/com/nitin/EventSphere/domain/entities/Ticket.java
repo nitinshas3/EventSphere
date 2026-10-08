@@ -1,6 +1,6 @@
 package com.nitin.EventSphere.domain.entities;
 
-import com.nitin.EventSphere.domain.TicketStatusEnum;
+import com.nitin.EventSphere.domain.enums.TicketStatusEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
