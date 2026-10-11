@@ -34,3 +34,7 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 
     Optional<Event> findByIdAndStatus(UUID id, EventStatusEnum status);
 }
+
+// find by organizer id method auto implementation done by jpa , it gives events handled by a single organizer not all events present
+
+// findbyidandorganizer id , gives you the single event uniqued out by event id and organizer id , it has id first then organizer id coz it just extends findbyid to findbyid and organizer id

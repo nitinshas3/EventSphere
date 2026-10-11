@@ -2,9 +2,7 @@ package com.nitin.EventSphere.mappers;
 
 import com.nitin.EventSphere.domain.CreateEventRequest;
 import com.nitin.EventSphere.domain.CreateTicketTypeRequest;
-import com.nitin.EventSphere.domain.dto.CreateEventRequestDto;
-import com.nitin.EventSphere.domain.dto.CreateEventResponseDto;
-import com.nitin.EventSphere.domain.dto.CreateTicketTypeRequestDto;
+import com.nitin.EventSphere.domain.dto.*;
 import com.nitin.EventSphere.domain.entities.Event;
 import com.nitin.EventSphere.domain.entities.TicketType;
 import org.mapstruct.Mapper;
@@ -18,5 +16,9 @@ public interface EventMapper {
     CreateEventRequest fromDto(CreateEventRequestDto dto);
 
     CreateEventResponseDto toDto(Event event);
+
+    ListEventTicketTypeResponseDto toDto(TicketType ticketType);
+
+    ListEventResponseDto toListEventResponseDto(Event event);
 
 }
