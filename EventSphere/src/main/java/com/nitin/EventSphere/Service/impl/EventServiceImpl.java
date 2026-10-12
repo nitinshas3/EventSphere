@@ -3,9 +3,14 @@ package com.nitin.EventSphere.Service.impl;
 
 import com.nitin.EventSphere.Service.EventService;
 import com.nitin.EventSphere.domain.CreateEventRequest;
+import com.nitin.EventSphere.domain.UpdateEventRequest;
+import com.nitin.EventSphere.domain.UpdateTicketTypeRequest;
 import com.nitin.EventSphere.domain.entities.Event;
 import com.nitin.EventSphere.domain.entities.TicketType;
 import com.nitin.EventSphere.domain.entities.User;
+import com.nitin.EventSphere.exceptions.EventNotFoundException;
+import com.nitin.EventSphere.exceptions.EventUpdateException;
+import com.nitin.EventSphere.exceptions.TicketTypeNotFoundException;
 import com.nitin.EventSphere.exceptions.UserNotFoundException;
 import com.nitin.EventSphere.repositories.EventRepository;
 import com.nitin.EventSphere.repositories.UserRepository;
@@ -74,6 +79,82 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findByIdAndOrganizerId(id, organizerId);
     }
 
+    @Override
+    @Transactional
+    public Event updateEventForOrganizer(UUID organizerId, UUID id, UpdateEventRequest event) {
+        if (null == event.getId()) {
+            throw new EventUpdateException("Event ID cannot be null");
+        }
+
+        if (!id.equals(event.getId())) {
+            throw new EventUpdateException("Cannot update the ID of an event");
+        }
+
+        Event existingEvent = eventRepository
+                .findByIdAndOrganizerId(id, organizerId)
+                .orElseThrow(() -> new EventNotFoundException(
+                        String.format("Event with ID '%s' does not exist", id))
+                );
+
+        existingEvent.setName(event.getName());
+        existingEvent.setStart(event.getStart());
+        existingEvent.setEnd(event.getEnd());
+        existingEvent.setVenue(event.getVenue());
+        existingEvent.setSalesStart(event.getSalesStart());
+        existingEvent.setSalesEnd(event.getSalesEnd());
+        existingEvent.setStatus(event.getStatus());
+
+        Set<UUID> requestTicketTypeIds = event.getTicketTypes()
+                .stream()
+                .map(UpdateTicketTypeRequest::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        existingEvent.getTicketTypes().removeIf(existingTicketType ->
+                !requestTicketTypeIds.contains(existingTicketType.getId())
+        );
+
+        Map<UUID, TicketType> existingTicketTypesIndex = existingEvent.getTicketTypes().stream()
+                .collect(Collectors.toMap(TicketType::getId, Function.identity()));
+
+        for (UpdateTicketTypeRequest ticketType : event.getTicketTypes()) {
+            if (null == ticketType.getId()) {
+                // Create
+                TicketType ticketTypeToCreate = new TicketType();
+                ticketTypeToCreate.setName(ticketType.getName());
+                ticketTypeToCreate.setPrice(ticketType.getPrice());
+                ticketTypeToCreate.setDescription(ticketType.getDescription());
+                ticketTypeToCreate.setTotalAvailable(ticketType.getTotalAvailable());
+                ticketTypeToCreate.setEvent(existingEvent);
+                existingEvent.getTicketTypes().add(ticketTypeToCreate);
+
+            } else if (existingTicketTypesIndex.containsKey(ticketType.getId())) {
+                // Update
+                TicketType existingTicketType = existingTicketTypesIndex.get(ticketType.getId());
+                existingTicketType.setName(ticketType.getName());
+                existingTicketType.setPrice(ticketType.getPrice());
+                existingTicketType.setDescription(ticketType.getDescription());
+                existingTicketType.setTotalAvailable(ticketType.getTotalAvailable());
+            } else {
+                throw new TicketTypeNotFoundException(String.format(
+                        "Ticket type with ID '%s' does not exist", ticketType.getId()
+                ));
+            }
+        }
+
+        return eventRepository.save(existingEvent);
+    }
+
+    @Override
+    @Transactional
+    public void deleteEventForOrganizer(UUID organizerId, UUID id) {
+        getEventForOrganizer(organizerId, id).ifPresent(eventRepository::delete);
+    }
+
+    @Override
+    public Page<Event> listPublishedEvents(Pageable pageable) {
+        return null;
+    }
 
 
 }
@@ -82,3 +163,9 @@ public class EventServiceImpl implements EventService {
 //listeventsfororganizer method -> this method just gives the events that particular user is organizer for not all
 
 //geteventfororganizer() -> returns only one event details
+
+//updateEventForOrganizer() -> takes event and organizer id for particular event identification  and updates that event coz event organized by organizer a should not beupdated by organizer b , updating rest of the things easy , but updating ticketytypes gets complex , go through this once more , basically fonrtend sends the id , but if id == null then that is a new one , and if id in exisiting event not in new one then delete it
+
+//updateeventfororganizer() -> checking event id and the id in the eventrequest is same or not , this is done for extra confirmation cannot alwasy trust frontend to send the correct data , usually id will be same only of both the thigns
+
+//deleteeventfororgnaizer() -> checks if a event is present ifpresent(delete) ifpresent is a method in optional , that takes a function as argument

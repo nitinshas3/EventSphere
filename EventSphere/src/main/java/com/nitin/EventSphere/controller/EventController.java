@@ -2,9 +2,8 @@ package com.nitin.EventSphere.controller;
 
 import com.nitin.EventSphere.Service.EventService;
 import com.nitin.EventSphere.domain.CreateEventRequest;
-import com.nitin.EventSphere.domain.dto.CreateEventRequestDto;
-import com.nitin.EventSphere.domain.dto.CreateEventResponseDto;
-import com.nitin.EventSphere.domain.dto.ListEventResponseDto;
+import com.nitin.EventSphere.domain.UpdateEventRequest;
+import com.nitin.EventSphere.domain.dto.*;
 import com.nitin.EventSphere.domain.entities.Event;
 import com.nitin.EventSphere.mappers.EventMapper;
 import jakarta.validation.Valid;
@@ -57,6 +56,48 @@ public class EventController {
         );
     }
 
+
+    @GetMapping(path = "/{eventId}")
+    public ResponseEntity<GetEventDetailsResponseDto> getEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId
+    ) {
+        UUID userId = parseUserId(jwt);
+        return eventService.getEventForOrganizer(userId, eventId)
+                .map(eventMapper::toGetEventDetailsResponseDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping(path = "/{eventId}")
+    public ResponseEntity<UpdateEventResponseDto> updateEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId,
+            @Valid @RequestBody UpdateEventRequestDto updateEventRequestDto) {
+        UpdateEventRequest updateEventRequest = eventMapper.fromDto(updateEventRequestDto);
+        UUID userId = parseUserId(jwt);
+
+        Event updatedEvent = eventService.updateEventForOrganizer(
+                userId, eventId, updateEventRequest
+        );
+
+        UpdateEventResponseDto updateEventResponseDto = eventMapper.toUpdateEventResponseDto(
+                updatedEvent);
+
+        return ResponseEntity.ok(updateEventResponseDto);
+    }
+
+
+    @DeleteMapping(path = "/{eventId}")
+    public ResponseEntity<Void> deleteEvent(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID eventId
+    ) {
+        UUID userId = parseUserId(jwt);
+        eventService.deleteEventForOrganizer(userId, eventId);
+        return ResponseEntity.noContent().build();
+    }
+
     private UUID parseUserId(Jwt jwt){
         return UUID.fromString(jwt.getSubject());
     }
@@ -68,5 +109,11 @@ public class EventController {
 
 // listevent() -> the pages will be used like when we see page 1 page 2 , in websites rather than loading entire thing , like contest rankings etc
 
-//listEvent() -> this just lists the event the current user is related to not all , like the current user is the one managing it or he is the organizer only those events
+//listEvents() -> this just lists the event the current user is related to not all , like the current user is the one managing it or he is the organizer only those events
+
+//getEvent()-> this gives details about a particular event gives listeventresponsedto which has listeventtickettyperesponsedto
+
+//updateevent()-> updates the event , takes updateeventrequestdto with updateticketytyperequestdto in it , and returns updateeventresponsedto , updates a single event
+
+//delteevent() -> no request response dto , delete event directly
 

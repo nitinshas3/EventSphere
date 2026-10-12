@@ -1,6 +1,9 @@
 package com.nitin.EventSphere.controller;
 
 import com.nitin.EventSphere.domain.dto.ErrorDto;
+import com.nitin.EventSphere.exceptions.EventNotFoundException;
+import com.nitin.EventSphere.exceptions.EventUpdateException;
+import com.nitin.EventSphere.exceptions.TicketTypeNotFoundException;
 import com.nitin.EventSphere.exceptions.UserNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,33 @@ import java.util.List;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+
+
+    @ExceptionHandler(EventUpdateException.class)
+    public ResponseEntity<ErrorDto> handleEventUpdateException(EventUpdateException ex) {
+        log.error("Caught EventUpdateException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Unable to update event");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TicketTypeNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleTicketTypeNotFoundException(
+            TicketTypeNotFoundException ex) {
+        log.error("Caught TicketTypeNotFoundException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Ticket type not found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleEventNotFoundException(EventNotFoundException ex) {
+        log.error("Caught EventNotFoundException", ex);
+        ErrorDto errorDto = new ErrorDto();
+        errorDto.setError("Event not found");
+        return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+    }
 
 
 
@@ -83,3 +113,5 @@ public class GlobalExceptionHandler {
 //whenever expecptions occurs it throws the expecion if no catch block then finds @restcontrolleradvicer bean and then in that specific expetion handler handles it no
 
 //// constraintviolationexception happens when we use constraints directly on parametrs in argumetns like notnull min etc , methodargumetnnotvalid expection happens wehn we use @valid annotation and it ehcks whole request body dto and it fails not just single parameter
+
+//

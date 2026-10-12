@@ -2,6 +2,8 @@ package com.nitin.EventSphere.mappers;
 
 import com.nitin.EventSphere.domain.CreateEventRequest;
 import com.nitin.EventSphere.domain.CreateTicketTypeRequest;
+import com.nitin.EventSphere.domain.UpdateEventRequest;
+import com.nitin.EventSphere.domain.UpdateTicketTypeRequest;
 import com.nitin.EventSphere.domain.dto.*;
 import com.nitin.EventSphere.domain.entities.Event;
 import com.nitin.EventSphere.domain.entities.TicketType;
@@ -21,4 +23,18 @@ public interface EventMapper {
 
     ListEventResponseDto toListEventResponseDto(Event event);
 
+    GetEventDetailsTicketTypesResponseDto toGetEventDetailsTicketTypesResponseDto(TicketType ticketType);
+
+    GetEventDetailsResponseDto toGetEventDetailsResponseDto(Event event);
+
+    UpdateTicketTypeRequest fromDto(UpdateTicketTypeRequestDto dto);
+
+    UpdateEventRequest fromDto(UpdateEventRequestDto dto);
+
+    UpdateTicketTypeResponseDto toUpdateTicketTypeResponseDto(TicketType ticketType);
+
+    UpdateEventResponseDto toUpdateEventResponseDto(Event event);
+
+
 }
+// in this see request dto is converted to service layer dto , but the response directly entity is converted to response dto of presentataion layer

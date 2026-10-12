@@ -14,3 +14,4 @@ public class CreateTicketTypeRequest {
     private String description;
     private Integer totalAvailable;
 }
+// this is a dto working in service layer

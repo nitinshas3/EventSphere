@@ -1,6 +1,6 @@
 package com.nitin.EventSphere.exceptions;
 
-public class UserNotFoundException extends EventTicketExceptions{
+public class UserNotFoundException extends EventTicketException {
     public UserNotFoundException() {
     }
 
