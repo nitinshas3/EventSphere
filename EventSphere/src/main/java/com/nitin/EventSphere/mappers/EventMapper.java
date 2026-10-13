@@ -35,6 +35,13 @@ public interface EventMapper {
 
     UpdateEventResponseDto toUpdateEventResponseDto(Event event);
 
+    ListPublishedEventResponseDto toListPublishedEventResponseDto(Event event);
+
+    GetPublishedEventDetailsTicketTypesResponseDto toGetPublishedEventDetailsTicketTypesResponseDto(
+            TicketType ticketType);
+
+    GetPublishedEventDetailsResponseDto toGetPublishedEventDetailsResponseDto(Event event);
+
 
 }
 // in this see request dto is converted to service layer dto , but the response directly entity is converted to response dto of presentataion layer

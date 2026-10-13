@@ -46,3 +46,5 @@ public class SecurityConfig {
     }
 }
 // done after creating userprivision filter , to add this filter in the filter chain this class is used
+
+//listpublisehd event has permit all permision as it just lists all the published evetns so , no organizer or anything requried but whereas the eventcotnrolelr all the activiteis in it need to be done by the organizer itself

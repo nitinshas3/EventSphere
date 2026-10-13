@@ -22,6 +22,10 @@ public interface EventService {
     void deleteEventForOrganizer(UUID organizerId, UUID id);
 
     Page<Event> listPublishedEvents(Pageable pageable);
+
+    Page<Event> searchPublishedEvents(String query, Pageable pageable);
+
+    Optional<Event> getPublishedEvent(UUID id);
 }
 
 // page is like dividing db in some partitions rather than loading all the rows at once , which happens in case we use list  we will only get partitions this is called pagination 10 pages 20 pages etc
@@ -36,3 +40,6 @@ public interface EventService {
 
 //listPublichsedEvents() -> lsiting events available for booking , all the events publisehd
 
+//searchpublishedevents() -> this lets us search the events based on some queries like venue location , ticket type etc
+
+//getpublishedEvent() -> gets a single event detials which is published and this can be shown to all even withtout auth , so this will be in published event controller , whihc has permit all () , in this we can book tickets and all

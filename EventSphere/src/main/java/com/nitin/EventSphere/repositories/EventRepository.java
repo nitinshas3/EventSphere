@@ -38,3 +38,7 @@ public interface EventRepository extends JpaRepository<Event, UUID> {
 // find by organizer id method auto implementation done by jpa , it gives events handled by a single organizer not all events present
 
 // findbyidandorganizer id , gives you the single event uniqued out by event id and organizer id , it has id first then organizer id coz it just extends findbyid to findbyid and organizer id
+
+//findbytstatus used in listingpublished events , the evetns whose status is published will be shown
+
+//findbyidandstatus used in getpublicshed event , to get a single event () which is published

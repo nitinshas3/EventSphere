@@ -19,4 +19,4 @@ public class CreateTicketTypeResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-}
+} // used in cerating an event with id and organizer id

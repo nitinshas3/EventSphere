@@ -8,6 +8,7 @@ import com.nitin.EventSphere.domain.UpdateTicketTypeRequest;
 import com.nitin.EventSphere.domain.entities.Event;
 import com.nitin.EventSphere.domain.entities.TicketType;
 import com.nitin.EventSphere.domain.entities.User;
+import com.nitin.EventSphere.domain.enums.EventStatusEnum;
 import com.nitin.EventSphere.exceptions.EventNotFoundException;
 import com.nitin.EventSphere.exceptions.EventUpdateException;
 import com.nitin.EventSphere.exceptions.TicketTypeNotFoundException;
@@ -156,6 +157,16 @@ public class EventServiceImpl implements EventService {
         return null;
     }
 
+    @Override
+    public Page<Event> searchPublishedEvents(String query, Pageable pageable) {
+        return eventRepository.searchEvents(query,pageable);
+    }
+
+    @Override
+    public Optional<Event> getPublishedEvent(UUID id) {
+        return eventRepository.findByIdAndStatus(id, EventStatusEnum.PUBLISHED);
+    }
+
 
 }
 // createevent method - with the user id we get from jwt token from the event controller we find the user in db , that will be our organizer , and the service layer dto will come as arguement , cretae event object and set values to it
@@ -169,3 +180,7 @@ public class EventServiceImpl implements EventService {
 //updateeventfororganizer() -> checking event id and the id in the eventrequest is same or not , this is done for extra confirmation cannot alwasy trust frontend to send the correct data , usually id will be same only of both the thigns
 
 //deleteeventfororgnaizer() -> checks if a event is present ifpresent(delete) ifpresent is a method in optional , that takes a function as argument
+
+//searchpublichsedevend()-> lets us search events based on some queries like venue etc
+
+//getpublishedEvent() -> gives details about a singel event which is published and can book tickets etc

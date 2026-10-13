@@ -10,4 +10,4 @@ import lombok.NoArgsConstructor;
 public class ErrorDto {
 
     private String error;
-}
+} // this dto just used to throw error message while handling exception in exception handling controller
