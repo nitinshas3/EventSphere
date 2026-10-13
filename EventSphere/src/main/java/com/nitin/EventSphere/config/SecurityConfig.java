@@ -42,7 +42,14 @@ public class SecurityConfig {
 
         http.addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
 
+
+
         return http.build();
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        return new JwtAuthenticationConverter();
     }
 }
 // done after creating userprivision filter , to add this filter in the filter chain this class is used
