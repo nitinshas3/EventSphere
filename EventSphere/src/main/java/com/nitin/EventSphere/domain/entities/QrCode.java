@@ -71,3 +71,4 @@ public class QrCode {
         return Objects.hash(id, status, value, createdAt, updatedAt);
     }
 }
+//value changes from varchar to text and uuid auto generation off see why
