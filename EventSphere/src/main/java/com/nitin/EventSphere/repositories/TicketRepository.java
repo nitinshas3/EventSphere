@@ -18,3 +18,5 @@ public interface TicketRepository extends JpaRepository<Ticket, UUID> {
 
     Optional<Ticket> findByIdAndPurchaserId(UUID id, UUID purchaserId);
 }
+
+// countbytickettype id , returns total number of tickets of that ticket type available

@@ -36,7 +36,7 @@ public class TicketTypeServiceImpl implements TicketTypeService {
                 String.format("User with ID %s was not found", userId)
         ));
 
-        TicketType ticketType = ticketTypeRepository.findByIdWithLock(ticketTypeId)
+        TicketType ticketType = ticketTypeRepository.findByIdWithLock(ticketTypeId) // lock here
                 .orElseThrow(() -> new TicketTypeNotFoundException(
                         String.format("Ticket type with ID %s was not found", ticketTypeId)
                 ));
@@ -53,11 +53,15 @@ public class TicketTypeServiceImpl implements TicketTypeService {
         ticket.setTicketType(ticketType);
         ticket.setPurchaser(user);
 
-        Ticket savedTicket = ticketRepository.save(ticket);
+        Ticket savedTicket = ticketRepository.save(ticket); // save the ticket and generate the qr code
         qrCodeService.generateQrCode(savedTicket);
 
-        return ticketRepository.save(savedTicket);
+        //return ticketRepository.save(savedTicket);
+        return savedTicket;
     }
 }
 
 // purchasing the ticket from ticket type , event one to many relation with ticket type , ticket type one to many relation with ticket , to we give ticket type and user id ,
+
+
+// there is a pesimestic write lock on getting the ticket type , so if one person accesses it unitl transaction commits or rollsback it doenst open the lock , so if the tickettype cannot be retrived the purchase ticket functin wont move forward
