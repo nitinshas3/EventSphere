@@ -8,4 +8,4 @@ public interface TicketTypeService {
     Ticket purchaseTicket(UUID userId, UUID ticketTypeId);
 }
 
-// we are doing the purchase ticket function in this coz we create a ticker from a ticket type so logical
+// we are doing the purchase ticket function in this coz we create a ticket from a ticket type so logical

@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.nitin.EventSphere.util.JwtUtil.parseUserId;
+
 @RestController
 @RequestMapping(path = "/api/v1/events")
 @RequiredArgsConstructor
@@ -98,9 +100,7 @@ public class EventController {
         return ResponseEntity.noContent().build();
     }
 
-    private UUID parseUserId(Jwt jwt){
-        return UUID.fromString(jwt.getSubject());
-    }
+
 
 
 } // createEvent() -> takes jwt and that users id is sent to dto , that will become the organizer and the presentation layer dto is received in the request it is converted to service layer dto using mapper
