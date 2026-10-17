@@ -20,3 +20,5 @@ public interface TicketTypeRepository extends JpaRepository<TicketType, UUID> {
 // this is used to get ticket type that needs to be booked in the purhcase ticket function , so when a person accesses a ticket type , that row in the ticket type table get locked , and others cant read or write in that row
 
 // pesimestic write -> doesnt allow both read and write pesimestic read allows read not write
+
+//user in ticket type service

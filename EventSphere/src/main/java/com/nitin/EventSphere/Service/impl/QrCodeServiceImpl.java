@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j // lombok logger helper
+@Slf4j
 public class QrCodeServiceImpl implements QrCodeService {
 
     private static final int QR_HEIGHT = 300;
@@ -54,7 +54,18 @@ public class QrCodeServiceImpl implements QrCodeService {
         }
     }
 
+    @Override
+    public byte[] getQrCodeImageForUserAndTicket(UUID userId, UUID ticketId) {
+        QrCode qrCode = qrCodeRepository.findByTicketIdAndTicketPurchaserId(ticketId, userId)
+                .orElseThrow(QrCodeNotFoundException::new);
 
+        try {
+            return Base64.getDecoder().decode(qrCode.getValue());
+        } catch(IllegalArgumentException ex) {
+            log.error("Invalid base64 QR Code for ticket ID: {}", ticketId, ex);
+            throw new QrCodeNotFoundException();
+        }
+    }
 
     private String generateQrCodeImage(UUID uniqueId) throws WriterException, IOException {
         BitMatrix bitMatrix = qrCodeWriter.encode(
