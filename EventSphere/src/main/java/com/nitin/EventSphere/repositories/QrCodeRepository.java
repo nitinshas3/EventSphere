@@ -19,3 +19,5 @@ public interface QrCodeRepository extends JpaRepository<QrCode, UUID> {
 }
 
 // will be used to store and retrive qrcode entity from the db
+
+//
