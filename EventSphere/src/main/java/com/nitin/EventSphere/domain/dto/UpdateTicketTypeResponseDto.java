@@ -20,4 +20,4 @@ public class UpdateTicketTypeResponseDto {
     private LocalDateTime updatedAt;
 
 }
-// this is used with udpate event request , to update a singel event
+// this is used with update event request , to update a single event
