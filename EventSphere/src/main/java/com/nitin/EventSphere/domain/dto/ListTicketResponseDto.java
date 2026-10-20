@@ -15,4 +15,4 @@ public class ListTicketResponseDto {
     private TicketStatusEnum status;
     private ListTicketTicketTypeResponseDto ticketType;
 }
-// this dto used to list the tickets booked by the user
+// this dto used to list the tickets booked by the user.
