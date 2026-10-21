@@ -20,4 +20,6 @@ public interface QrCodeRepository extends JpaRepository<QrCode, UUID> {
 
 // will be used to store and retrive qrcode entity from the db
 
-//
+//findbyticketidandticketpurchase id used to get the qrcode image in the qrcodeservice and show the qrcode image
+
+//findbyidandstatus is used to get the get the qr code while validation , and only get those qrcode which are valid and not expired , this is used in ticketvalidation service

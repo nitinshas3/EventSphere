@@ -90,4 +90,6 @@ public class QrCodeServiceImpl implements QrCodeService {
 
 //bitmatrix stores qrcode matrix
 
-// used to genearte qr code adn save in db
+// generateqrcodeimage() && generateqrcode() used to genearte qr code adn save in db
+
+//getqrcodeimageandticketid() -> gets the qr code for a user and ticket id

@@ -79,3 +79,5 @@ public class TicketController {
 // list tickets -> used to list all the tickets a user has purchased
 
 //getticket -> get a single purchased ticket of a user
+
+//getticketqrcode -> returns an image of qr code , hits the qrcodeservice where it goes to repository and by user id and ticket id gets the qr code which was saved during the ticket was purchased and shows it in image format
