@@ -1,0 +1,14 @@
+# ============================================================
+# GitHub Linguist overrides
+# Tells GitHub to ignore the frontend folder when calculating
+# repository language statistics — so the repo shows as Java.
+# ============================================================
+
+# Exclude the entire frontend directory from language detection
+frontend/** linguist-vendored
+
+# Also exclude common config/tooling files at the root that
+# are TypeScript/JS-adjacent but not "real" source code
+*.json linguist-vendored
+*.yaml linguist-vendored
+*.yml  linguist-vendored
